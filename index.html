@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamystrology - Multi-Dimensional Divination Insight Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Landing / Input Panel -->
+    <div id="input-overlay" class="overlay active">
+        <div class="input-panel">
+            <div class="logo">
+                <div class="logo-symbol">⟡</div>
+                <h1>Jamystrology</h1>
+                <p class="subtitle">다차원 점술 인사이트 플랫폼</p>
+            </div>
+            <form id="divination-form">
+                <div class="form-group">
+                    <label for="name">이름 (Name)</label>
+                    <input type="text" id="name" placeholder="홍길동" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birth-date">생년월일 (Birth Date)</label>
+                        <input type="date" id="birth-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birth-time">출생시간 (Birth Time)</label>
+                        <input type="time" id="birth-time" value="12:00" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="birth-location">출생지 (Birth Location)</label>
+                    <select id="birth-location">
+                        <option value="seoul">서울 (Seoul)</option>
+                        <option value="busan">부산 (Busan)</option>
+                        <option value="tokyo">도쿄 (Tokyo)</option>
+                        <option value="beijing">북경 (Beijing)</option>
+                        <option value="newyork">뉴욕 (New York)</option>
+                        <option value="london">런던 (London)</option>
+                        <option value="la">로스앤젤레스 (LA)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="gender">성별 (Gender)</label>
+                    <select id="gender">
+                        <option value="male">남 (Male)</option>
+                        <option value="female">여 (Female)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="question">질문 (Question) - 호라리/주역용</label>
+                    <textarea id="question" rows="3" placeholder="오늘 중요한 결정에 대해 알고 싶습니다..."></textarea>
+                </div>
+                <button type="submit" class="btn-divine">
+                    <span class="btn-icon">✦</span>
+                    점술 시작 (Begin Divination)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="hidden">
+        <!-- Top Bar -->
+        <header id="topbar">
+            <div class="topbar-left">
+                <span class="logo-mini">⟡</span>
+                <span class="app-title">Jamystrology</span>
+                <span class="divider">|</span>
+                <span id="user-info" class="user-info"></span>
+            </div>
+            <div class="topbar-center">
+                <button class="view-btn active" data-view="graph">그래프 (Graph)</button>
+                <button class="view-btn" data-view="dashboard">대시보드 (Dashboard)</button>
+                <button class="view-btn" data-view="synthesis">통합분석 (Synthesis)</button>
+            </div>
+            <div class="topbar-right">
+                <button id="btn-new" class="icon-btn" title="새 점술">⟲</button>
+            </div>
+        </header>
+
+        <!-- Graph View (Obsidian-like) -->
+        <div id="view-graph" class="view active">
+            <canvas id="graph-canvas"></canvas>
+            <!-- Node Detail Panel (slides in from right) -->
+            <div id="node-detail" class="detail-panel hidden">
+                <button id="close-detail" class="close-btn">✕</button>
+                <div id="detail-content"></div>
+            </div>
+            <!-- Mini legend -->
+            <div id="graph-legend">
+                <div class="legend-item"><span class="dot" style="background:#ff6b6b"></span>바빌로니아</div>
+                <div class="legend-item"><span class="dot" style="background:#4ecdc4"></span>호라리</div>
+                <div class="legend-item"><span class="dot" style="background:#ffe66d"></span>사주</div>
+                <div class="legend-item"><span class="dot" style="background:#a29bfe"></span>기문둔갑</div>
+                <div class="legend-item"><span class="dot" style="background:#fd79a8"></span>자미두수</div>
+                <div class="legend-item"><span class="dot" style="background:#00b894"></span>주역</div>
+                <div class="legend-item"><span class="dot" style="background:#ffeaa7;border:2px solid #fdcb6e"></span>통합 인사이트</div>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="view">
+            <div class="dashboard-grid" id="dashboard-grid"></div>
+        </div>
+
+        <!-- Synthesis View -->
+        <div id="view-synthesis" class="view">
+            <div id="synthesis-content"></div>
+        </div>
+    </div>
+
+    <script src="engines/heavenly-stems.js"></script>
+    <script src="engines/babylonian.js"></script>
+    <script src="engines/horary.js"></script>
+    <script src="engines/saju.js"></script>
+    <script src="engines/qimen.js"></script>
+    <script src="engines/ziwei.js"></script>
+    <script src="engines/iching.js"></script>
+    <script src="engines/synthesis.js"></script>
+    <script src="graph.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
