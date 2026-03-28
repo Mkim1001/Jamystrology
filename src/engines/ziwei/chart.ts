@@ -133,37 +133,47 @@ export function parseHourIndex(timeStr: string): number {
   return Math.floor(((hour + 1) % 24) / 2);
 }
 
-// ── 양력→음력 근사 변환 ────────────────────────────────
+// ── 양력→음력 변환 (korean-lunar-calendar 사용) ─────────
 export function solarToLunarApprox(
   year: number, month: number, day: number
 ): { lunarMonth: number; lunarDay: number; lunarYear: number } {
-  // 절기 기준 근사: 입춘(2/4) 이전은 전년도
-  const beforeIpchun = month < 2 || (month === 2 && day < 4);
-  const lunarYear = beforeIpchun ? year - 1 : year;
+  // korean-lunar-calendar 패키지 사용 (정확한 변환)
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const KoreanLunarCalendar = require("korean-lunar-calendar");
+    const cal = new KoreanLunarCalendar();
+    cal.setSolarDate(year, month, day);
+    const lunar = cal.getLunarCalendar();
+    return {
+      lunarYear: lunar.year,
+      lunarMonth: lunar.month,
+      lunarDay: lunar.day,
+    };
+  } catch {
+    // 패키지 없을 때 근사치 (절기 기반)
+    const beforeIpchun = month < 2 || (month === 2 && day < 4);
+    const lunarYear = beforeIpchun ? year - 1 : year;
 
-  // 음력 월 근사: 양력 월에서 약 1개월 차이
-  // 절기 경계 기준으로 음력 월 추정
-  const solarTermMonth: [number, number, number][] = [
-    [2, 4, 1], [3, 6, 2], [4, 5, 3], [5, 6, 4],
-    [6, 6, 5], [7, 7, 6], [8, 7, 7], [9, 8, 8],
-    [10, 8, 9], [11, 7, 10], [12, 7, 11], [1, 6, 12],
-  ];
+    const solarTermMonth: [number, number, number][] = [
+      [2, 4, 1], [3, 6, 2], [4, 5, 3], [5, 6, 4],
+      [6, 6, 5], [7, 7, 6], [8, 7, 7], [9, 8, 8],
+      [10, 8, 9], [11, 7, 10], [12, 7, 11], [1, 6, 12],
+    ];
 
-  let lunarMonth = 1;
-  const dateVal = month * 100 + day;
-  for (let i = solarTermMonth.length - 1; i >= 0; i--) {
-    const [m, d, lm] = solarTermMonth[i];
-    if (dateVal >= m * 100 + d) {
-      lunarMonth = lm;
-      break;
+    let lunarMonth = 1;
+    const dateVal = month * 100 + day;
+    for (let i = solarTermMonth.length - 1; i >= 0; i--) {
+      const [m, d, lm] = solarTermMonth[i];
+      if (dateVal >= m * 100 + d) {
+        lunarMonth = lm;
+        break;
+      }
     }
+    if (dateVal < 106) lunarMonth = 11;
+    const lunarDay = Math.min(day, 30);
+
+    return { lunarMonth, lunarDay, lunarYear };
   }
-  if (dateVal < 106) lunarMonth = 11; // 1월 6일 이전
-
-  // 음력 일수 근사 (양력 일과 유사하게 처리)
-  const lunarDay = Math.min(day, 30);
-
-  return { lunarMonth, lunarDay, lunarYear };
 }
 
 // ── 년도 간지 ──────────────────────────────────────────

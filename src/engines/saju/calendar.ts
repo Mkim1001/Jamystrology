@@ -1,75 +1,120 @@
 // ============================================================
-// 만세력 / 절기 / 사주 명식 산출
+// 만세력 / 절기 / 사주 명식 산출 (정밀 버전)
+// ============================================================
+// JDN 검증: 2024-01-01 = 갑자(甲子) ✓
+// 절기 계산: 수시력(寿星万年历) 공식 기반 (±1일 정확도)
+// 음력 변환: korean-lunar-calendar 패키지 사용
 // ============================================================
 
 import { STEM_YINYANG } from "./data";
 
-// ── 절기 기준 월 경계 ─────────────────────────────────────
-// 절(節) 시작일: [solar_month, approx_day, saju_month_index, branch_index]
-// saju_month_index: 0=인월 ~ 11=축월
-const SOLAR_TERM_BOUNDARIES: [number, number, number, number][] = [
-  [2, 4, 0, 2],    // 입춘 → 인월 시작
-  [3, 6, 1, 3],    // 경칩 → 묘월 시작
-  [4, 5, 2, 4],    // 청명 → 진월 시작
-  [5, 6, 3, 5],    // 입하 → 사월 시작
-  [6, 6, 4, 6],    // 망종 → 오월 시작
-  [7, 7, 5, 7],    // 소서 → 미월 시작
-  [8, 7, 6, 8],    // 입추 → 신월 시작
-  [9, 8, 7, 9],    // 백로 → 유월 시작
-  [10, 8, 8, 10],  // 한로 → 술월 시작
-  [11, 7, 9, 11],  // 입동 → 해월 시작
-  [12, 7, 10, 0],  // 대설 → 자월 시작
-  [1, 6, 11, 1],   // 소한 → 축월 시작
+// ── 절기 정밀 계산 (수시력 공식) ─────────────────────────
+// 12절(節): 사주 월 경계를 결정하는 절기
+// 순서: 소한(1월)→입춘(2월)→경칩(3월)→...→대설(12월)
+// C 상수: [20세기(1900-1999), 21세기(2000-2099)]
+const JIE_CONSTANTS: { month: number; c20: number; c21: number; useYMinus1ForLeap: boolean }[] = [
+  { month: 1,  c20: 6.11,  c21: 5.4055, useYMinus1ForLeap: true },  // 소한
+  { month: 2,  c20: 4.15,  c21: 3.87,   useYMinus1ForLeap: false }, // 입춘
+  { month: 3,  c20: 6.11,  c21: 5.63,   useYMinus1ForLeap: false }, // 경칩
+  { month: 4,  c20: 5.59,  c21: 4.81,   useYMinus1ForLeap: false }, // 청명
+  { month: 5,  c20: 6.318, c21: 5.52,   useYMinus1ForLeap: false }, // 입하
+  { month: 6,  c20: 6.5,   c21: 5.678,  useYMinus1ForLeap: false }, // 망종
+  { month: 7,  c20: 7.928, c21: 7.108,  useYMinus1ForLeap: false }, // 소서
+  { month: 8,  c20: 8.35,  c21: 7.45,   useYMinus1ForLeap: false }, // 입추
+  { month: 9,  c20: 8.44,  c21: 7.646,  useYMinus1ForLeap: false }, // 백로
+  { month: 10, c20: 9.098, c21: 8.318,  useYMinus1ForLeap: false }, // 한로
+  { month: 11, c20: 8.218, c21: 7.438,  useYMinus1ForLeap: false }, // 입동
+  { month: 12, c20: 7.9,   c21: 7.18,   useYMinus1ForLeap: false }, // 대설
 ];
 
-/** 절기 기준 사주 월과 사주 년도를 산출 */
+// 사주 월 인덱스 매핑: 절기 순�� → (monthIndex, branch)
+// 소한→축월(11,1), 입춘→인월(0,2), 경칩→묘월(1,3), ...
+const JIE_TO_MONTH: { monthIndex: number; branch: number }[] = [
+  { monthIndex: 11, branch: 1 },  // 소한 → 축월
+  { monthIndex: 0,  branch: 2 },  // 입춘 → 인월
+  { monthIndex: 1,  branch: 3 },  // 경칩 → 묘월
+  { monthIndex: 2,  branch: 4 },  // 청명 → 진월
+  { monthIndex: 3,  branch: 5 },  // 입하 → 사월
+  { monthIndex: 4,  branch: 6 },  // 망종 → 오월
+  { monthIndex: 5,  branch: 7 },  // 소서 → 미월
+  { monthIndex: 6,  branch: 8 },  // 입추 → 신월
+  { monthIndex: 7,  branch: 9 },  // 백로 → 유월
+  { monthIndex: 8,  branch: 10 }, // 한로 → 술월
+  { monthIndex: 9,  branch: 11 }, // 입동 → 해월
+  { monthIndex: 10, branch: 0 },  // 대설 → 자월
+];
+
+/**
+ * 특정 년도의 절기(節) 날짜를 계산 (수시력 공식)
+ * @param year 양력 년도
+ * @param jieIndex 절기 인덱스 (0=소한 ~ 11=대설)
+ * @returns { month, day } 양력 월/일
+ */
+export function calculateJieDate(year: number, jieIndex: number): { month: number; day: number } {
+  const jie = JIE_CONSTANTS[jieIndex];
+  const y = year % 100;
+  const century = Math.floor(year / 100);
+  const C = century >= 20 ? jie.c21 : jie.c20;
+  const leapBase = jie.useYMinus1ForLeap ? y - 1 : y;
+  const L = Math.floor(leapBase / 4);
+  const day = Math.floor(y * 0.2422 + C) - L;
+  return { month: jie.month, day };
+}
+
+/**
+ * 특정 년도의 입춘 날짜
+ */
+export function getIpchunDate(year: number): { month: number; day: number } {
+  return calculateJieDate(year, 1); // index 1 = 입춘
+}
+
+/** 절기 기준 사주 월과 사주 년도를 산출 (년도별 정밀 계산) */
 export function getSajuMonthAndYear(
   solarYear: number,
   solarMonth: number,
   solarDay: number
 ): { sajuYear: number; monthIndex: number; monthBranch: number } {
-  // 입춘 전이면 전년도 사주년
+  // 입춘 날��를 해당 ���도에 맞게 계산
+  const ipchun = getIpchunDate(solarYear);
   const beforeIpchun =
-    solarMonth < 2 || (solarMonth === 2 && solarDay < 4);
+    solarMonth < ipchun.month ||
+    (solarMonth === ipchun.month && solarDay < ipchun.day);
   const sajuYear = beforeIpchun ? solarYear - 1 : solarYear;
 
-  // 절기 경계를 역순으로 순회하여 해당 월 찾기
-  // 먼저 날짜를 일련번호로 변환 (1월=1, 12월=12 기준)
+  // 12절기 경계를 해당 년도에 맞게 계산
   const dateVal = solarMonth * 100 + solarDay;
+  const bounds: { dateVal: number; monthIndex: number; branch: number }[] = [];
 
-  // 절기 경계를 날짜 순서로 정렬 (1월 → 12월)
-  // 소한(1/6), 입춘(2/4), 경칩(3/6), ..., 대설(12/7)
-  const sortedBounds = [
-    { dateVal: 106, monthIndex: 11, branch: 1 },  // 소한 1/6
-    { dateVal: 204, monthIndex: 0, branch: 2 },   // 입춘 2/4
-    { dateVal: 306, monthIndex: 1, branch: 3 },   // 경칩 3/6
-    { dateVal: 405, monthIndex: 2, branch: 4 },   // 청명 4/5
-    { dateVal: 506, monthIndex: 3, branch: 5 },   // 입하 5/6
-    { dateVal: 606, monthIndex: 4, branch: 6 },   // 망종 6/6
-    { dateVal: 707, monthIndex: 5, branch: 7 },   // 소서 7/7
-    { dateVal: 807, monthIndex: 6, branch: 8 },   // 입추 8/7
-    { dateVal: 908, monthIndex: 7, branch: 9 },   // 백로 9/8
-    { dateVal: 1008, monthIndex: 8, branch: 10 },  // 한로 10/8
-    { dateVal: 1107, monthIndex: 9, branch: 11 },  // 입동 11/7
-    { dateVal: 1207, monthIndex: 10, branch: 0 },  // 대설 12/7
-  ];
+  for (let i = 0; i < 12; i++) {
+    // 소한(1월)은 해당 년도, 나머지도 해당 년도
+    const targetYear = solarYear;
+    const jieDate = calculateJieDate(targetYear, i);
+    bounds.push({
+      dateVal: jieDate.month * 100 + jieDate.day,
+      monthIndex: JIE_TO_MONTH[i].monthIndex,
+      branch: JIE_TO_MONTH[i].branch,
+    });
+  }
 
-  // 역순으로 찾기: 날짜값보다 작거나 같은 가장 마지막 경계
-  for (let i = sortedBounds.length - 1; i >= 0; i--) {
-    if (dateVal >= sortedBounds[i].dateVal) {
-      return {
-        sajuYear,
-        monthIndex: sortedBounds[i].monthIndex,
-        monthBranch: sortedBounds[i].branch,
-      };
+  // 날짜순 정렬 (1월 → 12월)
+  bounds.sort((a, b) => a.dateVal - b.dateVal);
+
+  // 역순으로 순회하여 해당 월 찾기
+  for (let i = bounds.length - 1; i >= 0; i--) {
+    if (dateVal >= bounds[i].dateVal) {
+      return { sajuYear, monthIndex: bounds[i].monthIndex, monthBranch: bounds[i].branch };
     }
   }
 
-  // 1월 6일 이전 → 전년도 자월(대설 ~ 소한)
+  // 1월 ����� 이전 → 전��도 자월(대설~소한)
   return { sajuYear, monthIndex: 10, monthBranch: 0 };
 }
 
-/** Julian Day Number 계산 (그레고리력) */
+// ── JDN (Julian Day Number) ─────────────────────────────
+/**
+ * 그레고리력 → Julian Day Number
+ * 검증: getJDN(2024,1,1) = 2460311, getDayPillar → 갑자(甲子) ✓
+ */
 export function getJDN(year: number, month: number, day: number): number {
   const a = Math.floor((14 - month) / 12);
   const y = year - a;
@@ -114,7 +159,10 @@ export function getMonthPillar(yearStem: number, monthIndex: number): Pillar {
   return { stem, branch };
 }
 
-/** 일주 산출 (JDN 기반) */
+/**
+ * 일주 산출 (JDN 기반)
+ * 공식 검증: 2024-01-01 → JDN 2460311 → stem=0(갑), branch=0(자) = 갑자(甲子) ✓
+ */
 export function getDayPillar(year: number, month: number, day: number): Pillar {
   const jdn = getJDN(year, month, day);
   return {
@@ -123,11 +171,17 @@ export function getDayPillar(year: number, month: number, day: number): Pillar {
   };
 }
 
-/** 시주 산출 */
+/**
+ * 시주 산출
+ * 야자시(夜子時) 처리:
+ * - 23:00~23:59 → 야자시: 시지(時支)는 자(子), 일간은 당일 유지
+ * - 00:00~00:59 → 조자시(早子時): 시지는 자(子), 일간은 다음날
+ * 현재 구현: 자정(00:00) 기준 일변경 (가장 보편적 방식)
+ */
 export function getHourPillar(dayStem: number, hour: number): Pillar {
   // 시진 결정: 23:00~00:59=자시(0), 01:00~02:59=축시(1), ...
   const branch = Math.floor(((hour + 1) % 24) / 2);
-  // 일상기시법: 일간 기준 자시의 천간 결정
+  // 일상기시법: 일간 기준 자시(子時)의 천간 결정
   const stemBase = (dayStem % 5) * 2;
   const stem = (stemBase + branch) % 10;
   return { stem, branch };
@@ -145,7 +199,10 @@ export function parseHour(timeStr: string): number {
   return parseInt(parts[0], 10) || 0;
 }
 
-/** 사주 전체 명식 산출 */
+/**
+ * 사주 전체 명식 산출
+ * 야자시(23:00~23:59) 처리: 시지는 자시, 일주는 당일 유지
+ */
 export function calculateFourPillars(
   birthYear: number,
   birthMonth: number,
@@ -219,4 +276,42 @@ export function calculateSewun(year?: number): { year: number; stem: number; bra
   const y = year ?? new Date().getFullYear();
   const { stem, branch } = getSexagenaryCycle(y);
   return { year: y, stem, branch };
+}
+
+// ── 음력 변환 (korean-lunar-calendar) ───────────────────
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+let KoreanLunarCalendar: any = null;
+try {
+  KoreanLunarCalendar = require("korean-lunar-calendar");
+} catch {
+  // 패키지 ���으면 근사치 사용
+}
+
+export interface LunarDate {
+  year: number;
+  month: number;
+  day: number;
+  isLeapMonth: boolean;
+}
+
+/** 양력 → 음력 변환 (korean-lunar-calendar 사용) */
+export function solarToLunar(solarYear: number, solarMonth: number, solarDay: number): LunarDate {
+  if (KoreanLunarCalendar) {
+    const cal = new KoreanLunarCalendar();
+    cal.setSolarDate(solarYear, solarMonth, solarDay);
+    const lunar = cal.getLunarCalendar();
+    return {
+      year: lunar.year,
+      month: lunar.month,
+      day: lunar.day,
+      isLeapMonth: lunar.intercalation ?? false,
+    };
+  }
+  // 패키지 없을 때 근사치 (사주에서는 사용하지 않으나 자미두수용)
+  return {
+    year: solarYear,
+    month: Math.max(1, solarMonth - 1) || 12,
+    day: solarDay,
+    isLeapMonth: false,
+  };
 }
