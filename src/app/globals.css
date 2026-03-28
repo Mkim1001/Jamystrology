@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0b1e;
+  --foreground: #e8e8f0;
+  --surface: #12133a;
+  --surface-hover: #1a1b4b;
+  --border: #2a2b5a;
+  --accent-gold: #ffd700;
+  --accent-purple: #a78bfa;
+  --accent-red: #ff6b6b;
+  --accent-cyan: #4ecdc4;
+  --text-muted: #6b7280;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
