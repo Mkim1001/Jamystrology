@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 const SYSTEM_TREE = [
   {
     group: "동양 점술",
@@ -28,6 +30,8 @@ const SYSTEM_TREE = [
   },
 ];
 
+const ALL_SYSTEM_KEYS = ["saju", "ziwei", "qimen", "iching", "horary", "babylonian"];
+
 const VIEW_TABS = [
   { key: "dashboard", icon: "▦", label: "대시보드" },
   { key: "graph", icon: "◎", label: "그래프" },
@@ -43,12 +47,44 @@ interface Props {
   onChangeView: (view: string) => void;
   onNewAnalysis: () => void;
   results: Record<string, any>;
+  onRunAdditional: (keys: string[]) => void;
+  onReRunAll: () => void;
+  loading: boolean;
+  loadingSystems: Set<string>;
 }
 
 export default function Sidebar({
   activeSystem, activeView, userName, birthDate,
   onSelectSystem, onChangeView, onNewAnalysis, results,
+  onRunAdditional, onReRunAll, loading, loadingSystems,
 }: Props) {
+  const [showAddDropdown, setShowAddDropdown] = useState(false);
+  const [confirmRun, setConfirmRun] = useState<string | null>(null);
+
+  const unrunSystems = ALL_SYSTEM_KEYS.filter(k => !results[k]);
+  const completedCount = ALL_SYSTEM_KEYS.filter(k => results[k]).length;
+  const hasSynthesis = completedCount >= 2;
+
+  const handleSystemClick = (key: string) => {
+    // For synthesis items, just select
+    if (key.startsWith("synthesis-")) {
+      onSelectSystem(key);
+      return;
+    }
+    // If system has results, select it
+    if (results[key]) {
+      onSelectSystem(key);
+      return;
+    }
+    // If system not run, confirm dialog
+    setConfirmRun(key);
+  };
+
+  const handleConfirmRun = (key: string) => {
+    setConfirmRun(null);
+    onRunAdditional([key]);
+  };
+
   return (
     <div className="h-full flex flex-col" style={{ background: "#181825", width: 240 }}>
       {/* 사용자 정보 */}
@@ -64,35 +100,113 @@ export default function Sidebar({
 
       {/* 시스템 트리 */}
       <div className="flex-1 overflow-y-auto py-2">
-        {SYSTEM_TREE.map(group => (
-          <div key={group.group} className="mb-2">
-            <div className="px-4 py-1 text-xs font-medium" style={{ color: "#6c7086" }}>
-              ▾ {group.group}
-            </div>
-            {group.items.map(item => {
-              const isActive = activeSystem === item.key;
-              const hasResult = results[item.key.split("-")[0]];
-              return (
-                <button key={item.key} onClick={() => onSelectSystem(item.key)}
-                  className="w-full flex items-center gap-2 px-4 py-1.5 text-sm transition-all duration-200 text-left"
-                  style={{
-                    background: isActive ? "#363650" : "transparent",
-                    color: isActive ? "#cdd6f4" : "#6c7086",
-                    borderLeft: isActive ? `2px solid ${item.color}` : "2px solid transparent",
-                  }}>
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: item.color }} />
-                  <span className="truncate">{item.name}</span>
-                  {hasResult && (
-                    <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded"
-                      style={{ background: "#363650", color: "#6c7086" }}>
-                      ✓
+        {SYSTEM_TREE.map(group => {
+          const isSynthesisGroup = group.group === "통합 분석";
+          return (
+            <div key={group.group} className="mb-2">
+              <div className="px-4 py-1 text-xs font-medium" style={{ color: "#6c7086" }}>
+                ▾ {group.group}
+              </div>
+              {group.items.map(item => {
+                const isActive = activeSystem === item.key;
+                const isSynthesisItem = item.key.startsWith("synthesis-");
+                const hasResult = isSynthesisItem ? hasSynthesis : !!results[item.key];
+                const isLoading = loadingSystems.has(item.key);
+                const isDisabled = isSynthesisItem && !hasSynthesis;
+
+                return (
+                  <button key={item.key}
+                    onClick={() => !isDisabled && handleSystemClick(item.key)}
+                    className="w-full flex items-center gap-2 px-4 py-1.5 text-sm transition-all duration-200 text-left"
+                    style={{
+                      background: isActive ? "#363650" : "transparent",
+                      color: isActive ? "#cdd6f4" : hasResult ? "#a6adc8" : "#6c7086",
+                      borderLeft: isActive ? `2px solid ${item.color}` : "2px solid transparent",
+                      opacity: isDisabled ? 0.3 : hasResult ? 1 : 0.5,
+                    }}>
+                    {/* 상태 점 */}
+                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{
+                      background: isLoading ? "#f9e2af" : hasResult ? item.color : "#6c7086",
+                      animation: isLoading ? "pulse 1.5s ease-in-out infinite" : undefined,
+                    }} />
+                    <span className="truncate">{item.name}</span>
+                    {/* 상태 표시 */}
+                    <span className="ml-auto text-[10px] shrink-0">
+                      {isLoading ? (
+                        <span style={{ color: "#f9e2af" }}>⟳</span>
+                      ) : hasResult ? (
+                        <span style={{ color: "#a6e3a1" }}>✓</span>
+                      ) : (
+                        <span style={{ color: "#6c7086" }}>—</span>
+                      )}
                     </span>
-                  )}
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
+          );
+        })}
+
+        {/* 확인 다이얼로그 */}
+        {confirmRun && (
+          <div className="mx-3 my-2 p-3 rounded-lg" style={{ background: "#262637", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div className="text-xs mb-2" style={{ color: "#cdd6f4" }}>
+              이 시스템을 분석하시겠습니까?
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => handleConfirmRun(confirmRun)}
+                className="flex-1 py-1 rounded text-xs transition-all duration-200"
+                style={{ background: "#b4befe", color: "#1e1e2e" }}>
+                분석
+              </button>
+              <button onClick={() => setConfirmRun(null)}
+                className="flex-1 py-1 rounded text-xs transition-all duration-200"
+                style={{ background: "#363650", color: "#6c7086" }}>
+                취소
+              </button>
+            </div>
           </div>
-        ))}
+        )}
+      </div>
+
+      {/* 추가 분석 / 전체 재실행 */}
+      <div className="p-3 border-t space-y-2" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+        {/* 추가 분석 */}
+        {unrunSystems.length > 0 && (
+          <div className="relative">
+            <button onClick={() => setShowAddDropdown(!showAddDropdown)}
+              disabled={loading}
+              className="w-full py-1.5 rounded text-xs transition-all duration-200 disabled:opacity-40"
+              style={{ color: "#b4befe", border: "1px solid rgba(255,255,255,0.06)" }}>
+              + 추가 분석
+            </button>
+            {showAddDropdown && (
+              <div className="absolute bottom-full left-0 right-0 mb-1 rounded-lg overflow-hidden"
+                style={{ background: "#262637", border: "1px solid rgba(255,255,255,0.06)" }}>
+                {unrunSystems.map(key => {
+                  const item = SYSTEM_TREE.flatMap(g => g.items).find(i => i.key === key);
+                  if (!item) return null;
+                  return (
+                    <button key={key}
+                      onClick={() => { setShowAddDropdown(false); onRunAdditional([key]); }}
+                      className="w-full text-left px-3 py-2 text-xs transition-all duration-200 flex items-center gap-2"
+                      style={{ color: "#a6adc8" }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: item.color }} />
+                      {item.name}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 전체 재실행 */}
+        <button onClick={onReRunAll} disabled={loading}
+          className="w-full py-1.5 rounded text-xs transition-all duration-200 disabled:opacity-40"
+          style={{ color: "#6c7086", border: "1px solid rgba(255,255,255,0.06)" }}>
+          ↻ 전체 재실행
+        </button>
       </div>
 
       {/* 뷰 전환 */}
@@ -109,6 +223,14 @@ export default function Sidebar({
           </button>
         ))}
       </div>
+
+      {/* pulse animation */}
+      <style jsx>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
     </div>
   );
 }
