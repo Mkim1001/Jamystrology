@@ -12,10 +12,11 @@ import DetailPanel from "@/components/DetailPanel";
 import GraphView from "@/components/graph/GraphView";
 import SynthesisView from "@/components/SynthesisView";
 import SingleSystemView from "@/components/SingleSystemView";
+import AskAI from "@/components/AskAI";
 
 /* ─── types ─── */
 
-type ViewMode = "dashboard" | "graph" | "synthesis";
+type ViewMode = "dashboard" | "graph" | "synthesis" | "askai";
 type AnalysisMode = "full" | "selective" | "single";
 
 const ALL_ENGINES: { key: string; label: string; calc: (i: DivinationInput) => DivinationResult }[] = [
@@ -245,6 +246,7 @@ export default function Home() {
             synthesisResult={synthesisResult}
             onSelectSystem={handleSelectSystem}
             onRunSystem={(key) => handleRunAdditional([key])}
+            onAskAI={() => setActiveView("askai")}
             loading={loading}
             loadingSystems={loadingSystems}
           />
@@ -258,6 +260,17 @@ export default function Home() {
         )}
         {activeView === "synthesis" && synthesisResult && (
           <SynthesisView synthesisResult={synthesisResult} />
+        )}
+        {activeView === "askai" && (
+          <AskAI
+            results={results}
+            synthesisResult={synthesisResult}
+            userName={userName}
+            gender={currentForm?.gender || "male"}
+            birthDate={birthDate}
+            birthTime={currentForm?.birthTime || ""}
+            birthPlace={currentForm?.birthPlace || ""}
+          />
         )}
       </div>
 

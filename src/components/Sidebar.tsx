@@ -36,6 +36,7 @@ const VIEW_TABS = [
   { key: "dashboard", icon: "▦", label: "대시보드" },
   { key: "graph", icon: "◎", label: "그래프" },
   { key: "synthesis", icon: "◈", label: "통합분석" },
+  { key: "askai", icon: "⬡", label: "Ask AI" },
 ] as const;
 
 interface Props {

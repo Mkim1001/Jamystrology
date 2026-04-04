@@ -23,16 +23,26 @@ interface Props {
   synthesisResult: DivinationResult | null;
   onSelectSystem: (key: string) => void;
   onRunSystem: (key: string) => void;
+  onAskAI?: () => void;
   loading: boolean;
   loadingSystems: Set<string>;
 }
 
-export default function Dashboard({ results, synthesisResult, onSelectSystem, onRunSystem, loading, loadingSystems }: Props) {
+export default function Dashboard({ results, synthesisResult, onSelectSystem, onRunSystem, onAskAI, loading, loadingSystems }: Props) {
   return (
     <div className="p-6 overflow-y-auto h-full">
-      {/* 브레드크럼 */}
-      <div className="text-xs mb-4" style={{ color: "#6c7086" }}>
-        대시보드 &gt; 전체 요약
+      {/* 브레드크럼 + Ask AI */}
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-xs" style={{ color: "#6c7086" }}>
+          대시보드 &gt; 전체 요약
+        </div>
+        {onAskAI && Object.keys(results).length > 0 && (
+          <button onClick={onAskAI}
+            className="text-xs px-3 py-1.5 rounded transition-all duration-200"
+            style={{ color: "#b4befe", border: "1px solid rgba(255,255,255,0.06)", background: "#262637" }}>
+            ⬡ Ask AI
+          </button>
+        )}
       </div>
 
       {/* 종합 메시지 */}
