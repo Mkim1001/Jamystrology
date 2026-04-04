@@ -134,8 +134,8 @@ export default function GraphView({ results, onSelectNode }: Props) {
       edges.forEach(e => {
         const sId = typeof e.source === "object" ? (e.source as GraphNode).id : e.source;
         const tId = typeof e.target === "object" ? (e.target as GraphNode).id : e.target;
-        if (sId === d.id) connected.add(tId);
-        if (tId === d.id) connected.add(sId);
+        if (sId === d.id) connected.add(String(tId));
+        if (tId === d.id) connected.add(String(sId));
       });
 
       node.attr("fill-opacity", n => connected.has(n.id) ? 0.9 : 0.05);
