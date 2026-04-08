@@ -225,6 +225,17 @@ export default function Sidebar({
         ))}
       </div>
 
+      {/* 명상 링크 */}
+      <div className="px-3 pb-3">
+        <a href="/meditation"
+          className="flex items-center gap-2 w-full py-1.5 px-3 rounded text-xs transition-all duration-200"
+          style={{ color: "#a78bfa", border: "1px solid rgba(167,139,250,0.2)", background: "rgba(124,58,237,0.08)" }}>
+          <span>🧘</span>
+          <span>명상 가이드</span>
+          <span className="ml-auto" style={{ color: "#6c7086" }}>→</span>
+        </a>
+      </div>
+
       {/* pulse animation */}
       <style jsx>{`
         @keyframes pulse {

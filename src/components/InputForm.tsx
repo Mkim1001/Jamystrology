@@ -108,6 +108,11 @@ export default function InputForm({ onSubmit, loading, loadingSteps }: Props) {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-medium" style={{ color: "#cdd6f4" }}>Jamystrology</h1>
           <p className="text-sm mt-1" style={{ color: "#6c7086" }}>六術洞察</p>
+          <a href="/meditation"
+            className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full text-xs transition-all duration-200"
+            style={{ color: "#a78bfa", border: "1px solid rgba(167,139,250,0.3)", background: "rgba(124,58,237,0.1)" }}>
+            🧘 PoseNet 명상 가이드
+          </a>
         </div>
 
         <div className="rounded-lg p-8" style={{ background: "#262637" }}>
