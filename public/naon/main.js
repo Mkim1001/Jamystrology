@@ -1,3 +1,45 @@
+// ── Language Toggle ──────────────────────────────────
+let currentLang = 'ko';
+
+function toggleLang() {
+  currentLang = currentLang === 'ko' ? 'en' : 'ko';
+  applyLang(currentLang);
+
+  // Update toggle button active states
+  document.querySelector('.lang-ko').classList.toggle('active', currentLang === 'ko');
+  document.querySelector('.lang-en').classList.toggle('active', currentLang === 'en');
+
+  // Update html lang attribute
+  document.documentElement.lang = currentLang;
+
+  // Update page title
+  const titleEl = document.querySelector('title');
+  const titleVal = currentLang === 'en' ? titleEl.dataset.en : titleEl.dataset.ko;
+  if (titleVal) titleEl.textContent = titleVal;
+
+  // Update newsletter input placeholder
+  const input = document.getElementById('newsletter-input');
+  if (input) {
+    input.placeholder = currentLang === 'en'
+      ? (input.dataset.placeholderEn || input.placeholder)
+      : '이메일 주소 입력';
+  }
+}
+
+function applyLang(lang) {
+  // 1. Simple text swap: data-en attribute (textContent)
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (!el.dataset.ko) el.dataset.ko = el.textContent.trim();
+    el.textContent = lang === 'en' ? el.dataset.en : el.dataset.ko;
+  });
+
+  // 2. HTML swap: data-en-html attribute (innerHTML)
+  document.querySelectorAll('[data-en-html]').forEach(el => {
+    if (!el.dataset.koHtml) el.dataset.koHtml = el.innerHTML;
+    el.innerHTML = lang === 'en' ? el.dataset.enHtml : el.dataset.koHtml;
+  });
+}
+
 // ── Meditation Modal ─────────────────────────────────
 // Path: relative to index.html location
 // posenet-meditation repo root → meditation/sketch.html

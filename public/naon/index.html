@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>나온 명상 — 건강한 마음, 건강한 삶</title>
+  <title data-ko="나온 명상 — 건강한 마음, 건강한 삶" data-en="Naon Meditation — Healthy Mind, Healthy Life">나온 명상 — 건강한 마음, 건강한 삶</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -13,35 +13,33 @@
   <!-- ── HEADER ───────────────────────────────────────────────── -->
   <header class="site-header" id="site-header">
     <div class="header-inner">
-      <!-- Logo -->
       <a href="index.html" class="logo-link">
         <svg viewBox="0 0 260 70" width="160" height="42" aria-label="나온 명상">
-          <!-- 나 -->
-          <text x="2"  y="54" class="logo-green">나</text>
-          <!-- 온 — O is a circle -->
-          <text x="58" y="54" class="logo-green">온</text>
-          <!-- gap -->
-          <!-- 명 -->
+          <text x="2"   y="54" class="logo-green">나</text>
+          <text x="58"  y="54" class="logo-green">온</text>
           <text x="138" y="54" class="logo-amber">명</text>
-          <!-- 상 -->
           <text x="196" y="54" class="logo-amber">상</text>
         </svg>
       </a>
 
-      <!-- Nav -->
       <nav class="main-nav" id="main-nav">
         <ul>
-          <li><a href="meditation.html">명상법</a></li>
-          <li><a href="health.html">건강</a></li>
-          <li><a href="mindfulness.html">마음챙김</a></li>
-          <li><a href="science.html">과학</a></li>
-          <li><a href="community.html">커뮤니티</a></li>
+          <li><a href="meditation.html" data-en="Meditation">명상법</a></li>
+          <li><a href="health.html"     data-en="Health">건강</a></li>
+          <li><a href="mindfulness.html" data-en="Mindfulness">마음챙김</a></li>
+          <li><a href="science.html"    data-en="Science">과학</a></li>
+          <li><a href="community.html"  data-en="Community">커뮤니티</a></li>
         </ul>
       </nav>
 
-      <!-- CTA -->
       <div class="header-actions">
-        <a href="app.html" class="btn-start">AI 명상 시작</a>
+        <!-- Language toggle -->
+        <button class="lang-toggle" id="lang-toggle" onclick="toggleLang()" aria-label="언어 변경">
+          <span class="lang-ko active">한</span>
+          <span class="lang-divider">|</span>
+          <span class="lang-en">EN</span>
+        </button>
+        <a href="app.html" class="btn-start" data-en="Start AI Meditation">AI 명상 시작</a>
         <button class="hamburger" id="hamburger" aria-label="메뉴">
           <span></span><span></span><span></span>
         </button>
@@ -51,8 +49,8 @@
 
   <!-- ── BREAKING BAR ─────────────────────────────────────────── -->
   <div class="breaking-bar">
-    <span class="breaking-label">신규</span>
-    <a href="#">AI PoseNet 차크라 명상 가이드가 출시되었습니다 →</a>
+    <span class="breaking-label" data-en="NEW">신규</span>
+    <a href="#" data-en="AI PoseNet Chakra Meditation Guide is now live →">AI PoseNet 차크라 명상 가이드가 출시되었습니다 →</a>
   </div>
 
   <!-- ── HERO ─────────────────────────────────────────────────── -->
@@ -60,15 +58,15 @@
     <div class="hero-image hero-img-1"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <span class="hero-tag">오늘의 명상</span>
-      <h1>지금 이 순간,<br>나를 찾는 시간</h1>
-      <p>바쁜 일상 속 단 10분. 호흡에 집중하는 것만으로도 마음이 달라집니다.</p>
+      <span class="hero-tag" data-en="Today's Meditation">오늘의 명상</span>
+      <h1 data-en-html="In This Moment,<br>Finding Yourself">지금 이 순간,<br>나를 찾는 시간</h1>
+      <p data-en="Just 10 minutes in your busy day. Simply focusing on your breath can change everything.">바쁜 일상 속 단 10분. 호흡에 집중하는 것만으로도 마음이 달라집니다.</p>
       <div class="hero-btns">
         <button class="btn-try" id="btn-try-hero" onclick="openMeditationModal()">
           <span class="btn-try-icon">🧘</span>
-          Try Meditation Session
+          <span data-en="Try Meditation Session">Try Meditation Session</span>
         </button>
-        <a href="guide.html" class="btn-ghost">입문 가이드</a>
+        <a href="guide.html" class="btn-ghost" data-en="Beginner's Guide">입문 가이드</a>
       </div>
     </div>
   </section>
@@ -77,38 +75,38 @@
   <section class="latest-strip">
     <div class="container">
       <div class="latest-header">
-        <h2>최신 아티클</h2>
-        <a href="articles.html" class="see-all">전체 보기 →</a>
+        <h2 data-en="Latest Articles">최신 아티클</h2>
+        <a href="articles.html" class="see-all" data-en="See All →">전체 보기 →</a>
       </div>
       <div class="latest-grid">
 
         <article class="latest-card">
           <div class="card-img card-img-green"></div>
           <div class="card-body">
-            <span class="cat cat-green">명상법</span>
-            <h3><a href="#">아침 5분 호흡 명상으로 하루를 여는 법</a></h3>
-            <p>눈을 뜨자마자 휴대폰 대신 호흡에 집중해 보세요. 단 5분이 하루의 질을 바꿉니다.</p>
-            <span class="read-time">5분 읽기</span>
+            <span class="cat cat-green" data-en="Meditation">명상법</span>
+            <h3><a href="#" data-en="How to Start Your Day with a 5-Minute Breath Meditation">아침 5분 호흡 명상으로 하루를 여는 법</a></h3>
+            <p data-en="Instead of reaching for your phone the moment you wake up, focus on your breath. Just 5 minutes can transform the quality of your entire day.">눈을 뜨자마자 휴대폰 대신 호흡에 집중해 보세요. 단 5분이 하루의 질을 바꿉니다.</p>
+            <span class="read-time" data-en="5 min read">5분 읽기</span>
           </div>
         </article>
 
         <article class="latest-card">
           <div class="card-img card-img-amber"></div>
           <div class="card-body">
-            <span class="cat cat-amber">건강</span>
-            <h3><a href="#">스트레스를 줄이는 마음챙김 기법 5가지</a></h3>
-            <p>일상에서 바로 실천할 수 있는 마음챙김 기술들. 과학이 증명한 방법들입니다.</p>
-            <span class="read-time">7분 읽기</span>
+            <span class="cat cat-amber" data-en="Health">건강</span>
+            <h3><a href="#" data-en="5 Mindfulness Techniques to Reduce Stress">스트레스를 줄이는 마음챙김 기법 5가지</a></h3>
+            <p data-en="Practical mindfulness skills you can use right now in daily life — all scientifically proven.">일상에서 바로 실천할 수 있는 마음챙김 기술들. 과학이 증명한 방법들입니다.</p>
+            <span class="read-time" data-en="7 min read">7분 읽기</span>
           </div>
         </article>
 
         <article class="latest-card">
           <div class="card-img card-img-teal"></div>
           <div class="card-body">
-            <span class="cat cat-teal">과학</span>
-            <h3><a href="#">명상이 뇌 구조를 바꾼다: 최신 연구 결과</a></h3>
-            <p>8주 명상 후 회백질 밀도가 증가한다는 하버드 연구를 소개합니다.</p>
-            <span class="read-time">8분 읽기</span>
+            <span class="cat cat-teal" data-en="Science">과학</span>
+            <h3><a href="#" data-en="Meditation Reshapes the Brain: Latest Research Findings">명상이 뇌 구조를 바꾼다: 최신 연구 결과</a></h3>
+            <p data-en="Introducing the Harvard study showing increased grey matter density after just 8 weeks of meditation.">8주 명상 후 회백질 밀도가 증가한다는 하버드 연구를 소개합니다.</p>
+            <span class="read-time" data-en="8 min read">8분 읽기</span>
           </div>
         </article>
 
@@ -122,17 +120,17 @@
       <div class="featured-article">
         <div class="featured-img featured-img-purple"></div>
         <div class="featured-text">
-          <span class="cat cat-purple">편집장 추천</span>
-          <h2>수면 전 바디 스캔 명상: 깊은 잠을 위한 20분 가이드</h2>
-          <p class="featured-desc">
+          <span class="cat cat-purple" data-en="Editor's Pick">편집장 추천</span>
+          <h2 data-en="Body Scan Meditation Before Sleep: A 20-Minute Guide to Deeper Rest">수면 전 바디 스캔 명상: 깊은 잠을 위한 20분 가이드</h2>
+          <p class="featured-desc" data-en="Slowly scanning your body from toes to head before sleep is remarkably effective for insomnia. Developed by the UMass Center for Mindfulness, this technique is practiced by millions worldwide.">
             잠들기 전, 발끝부터 머리끝까지 몸을 천천히 훑어 내려가는 바디 스캔 명상은 불면증 해소에 탁월한 효과가 있습니다. 매사추세츠 대학교 마음챙김 센터에서 개발한 이 기법은 전 세계 수백만 명이 실천하고 있습니다.
           </p>
           <ul class="featured-bullets">
-            <li>✦ 긴장된 근육 이완에 효과적</li>
-            <li>✦ 잠드는 시간 평균 40% 단축</li>
-            <li>✦ 매일 20분, 2주면 변화를 느낍니다</li>
+            <li data-en="✦ Highly effective for releasing muscle tension">✦ 긴장된 근육 이완에 효과적</li>
+            <li data-en="✦ Reduces average time to fall asleep by 40%">✦ 잠드는 시간 평균 40% 단축</li>
+            <li data-en="✦ Just 20 minutes a day — feel the change in 2 weeks">✦ 매일 20분, 2주면 변화를 느낍니다</li>
           </ul>
-          <a href="#" class="btn-link">전체 가이드 읽기 →</a>
+          <a href="#" class="btn-link" data-en="Read Full Guide →">전체 가이드 읽기 →</a>
         </div>
       </div>
     </div>
@@ -142,37 +140,37 @@
   <section class="getting-started">
     <div class="container">
       <div class="section-head">
-        <h2>명상이 처음이신가요?</h2>
-        <p>누구나 시작할 수 있습니다. 단 한 번의 호흡부터 시작하세요.</p>
+        <h2 data-en="New to Meditation?">명상이 처음이신가요?</h2>
+        <p data-en="Anyone can start. Begin with just one breath.">누구나 시작할 수 있습니다. 단 한 번의 호흡부터 시작하세요.</p>
       </div>
       <div class="start-grid">
 
         <div class="start-card">
           <div class="start-icon">🌱</div>
-          <h3>호흡 명상</h3>
-          <p>가장 기본적인 명상. 코로 들이쉬고 입으로 내쉬며 호흡에만 집중합니다.</p>
-          <a href="#" class="btn-link">시작하기 →</a>
+          <h3 data-en="Breath Meditation">호흡 명상</h3>
+          <p data-en="The most fundamental meditation. Inhale through the nose, exhale through the mouth — focus only on your breath.">가장 기본적인 명상. 코로 들이쉬고 입으로 내쉬며 호흡에만 집중합니다.</p>
+          <a href="#" class="btn-link" data-en="Get Started →">시작하기 →</a>
         </div>
 
         <div class="start-card">
           <div class="start-icon">🧘</div>
-          <h3>바디 스캔</h3>
-          <p>온몸을 의식하며 긴장을 풀어나가는 명상. 수면 전 특히 효과적입니다.</p>
-          <a href="#" class="btn-link">시작하기 →</a>
+          <h3 data-en="Body Scan">바디 스캔</h3>
+          <p data-en="Meditation that releases tension by bringing awareness to your whole body. Especially effective before sleep.">온몸을 의식하며 긴장을 풀어나가는 명상. 수면 전 특히 효과적입니다.</p>
+          <a href="#" class="btn-link" data-en="Get Started →">시작하기 →</a>
         </div>
 
         <div class="start-card">
           <div class="start-icon">🤖</div>
-          <h3>AI 자세 교정</h3>
-          <p>카메라로 자세를 분석하고 차크라 포인트를 실시간으로 시각화합니다.</p>
-          <button class="btn-link-btn" onclick="openMeditationModal()">앱 열기 →</button>
+          <h3 data-en="AI Posture Guide">AI 자세 교정</h3>
+          <p data-en="Analyzes your posture via camera and visualizes chakra points in real time.">카메라로 자세를 분석하고 차크라 포인트를 실시간으로 시각화합니다.</p>
+          <button class="btn-link-btn" onclick="openMeditationModal()" data-en="Open App →">앱 열기 →</button>
         </div>
 
         <div class="start-card">
           <div class="start-icon">🎵</div>
-          <h3>사운드 명상</html>
-          <p>자연 소리나 바이노럴 비트를 활용해 더 깊은 집중 상태로 들어갑니다.</p>
-          <a href="#" class="btn-link">시작하기 →</a>
+          <h3 data-en="Sound Meditation">사운드 명상</h3>
+          <p data-en="Use nature sounds or binaural beats to enter a deeper state of concentration.">자연 소리나 바이노럴 비트를 활용해 더 깊은 집중 상태로 들어갑니다.</p>
+          <a href="#" class="btn-link" data-en="Get Started →">시작하기 →</a>
         </div>
 
       </div>
@@ -185,32 +183,29 @@
       <div class="promo-inner">
         <div class="promo-text">
           <span class="promo-badge">NEW</span>
-          <h2>AI가 당신의 자세를 실시간으로 분석합니다</h2>
-          <p>
+          <h2 data-en="AI Analyzes Your Posture in Real Time">AI가 당신의 자세를 실시간으로 분석합니다</h2>
+          <p data-en="Just sit in front of the camera — PoseNet AI detects spinal alignment and shoulder balance. 7 chakra points glow based on your posture to guide you toward the perfect meditation position.">
             카메라 앞에 앉기만 하면 PoseNet AI가 척추 정렬과 어깨 균형을 감지합니다.
             7개 차크라 포인트가 자세에 따라 빛나며 올바른 명상 자세를 안내합니다.
           </p>
           <ul class="promo-list">
-            <li>✓ 실시간 척추·어깨 정렬 감지</li>
-            <li>✓ 7개 차크라 시각화</li>
-            <li>✓ 3가지 호흡 가이드 (일반 / 4-7-8 / 박스)</li>
-            <li>✓ 완전 무료 · 설치 불필요</li>
+            <li data-en="✓ Real-time spine & shoulder alignment detection">✓ 실시간 척추·어깨 정렬 감지</li>
+            <li data-en="✓ 7 chakra visualization">✓ 7개 차크라 시각화</li>
+            <li data-en="✓ 3 breathing guides (Normal / 4-7-8 / Box)">✓ 3가지 호흡 가이드 (일반 / 4-7-8 / 박스)</li>
+            <li data-en="✓ Completely free · No installation needed">✓ 완전 무료 · 설치 불필요</li>
           </ul>
           <button class="btn-try btn-try-dark" onclick="openMeditationModal()">
             <span class="btn-try-icon">🧘</span>
-            Try Meditation Session
+            <span data-en="Try Meditation Session">Try Meditation Session</span>
           </button>
         </div>
         <div class="promo-visual">
           <div class="promo-phone">
             <div class="phone-screen">
               <div class="chakra-preview">
-                <div class="cp cp1"></div>
-                <div class="cp cp2"></div>
-                <div class="cp cp3"></div>
-                <div class="cp cp4"></div>
-                <div class="cp cp5"></div>
-                <div class="cp cp6"></div>
+                <div class="cp cp1"></div><div class="cp cp2"></div>
+                <div class="cp cp3"></div><div class="cp cp4"></div>
+                <div class="cp cp5"></div><div class="cp cp6"></div>
                 <div class="cp cp7"></div>
               </div>
             </div>
@@ -224,62 +219,62 @@
   <section class="more-articles">
     <div class="container">
       <div class="section-head">
-        <h2>인기 아티클</h2>
-        <a href="articles.html" class="see-all">전체 보기 →</a>
+        <h2 data-en="Popular Articles">인기 아티클</h2>
+        <a href="articles.html" class="see-all" data-en="See All →">전체 보기 →</a>
       </div>
       <div class="articles-grid">
 
         <article class="article-card">
           <div class="card-img card-img-rose"></div>
           <div class="card-body">
-            <span class="cat cat-rose">마음챙김</span>
-            <h3><a href="#">감정에 휩쓸리지 않는 법: 관찰자 시점 명상</a></h3>
-            <span class="read-time">6분 읽기</span>
+            <span class="cat cat-rose" data-en="Mindfulness">마음챙김</span>
+            <h3><a href="#" data-en="How Not to Be Swept Away by Emotions: Observer Perspective Meditation">감정에 휩쓸리지 않는 법: 관찰자 시점 명상</a></h3>
+            <span class="read-time" data-en="6 min read">6분 읽기</span>
           </div>
         </article>
 
         <article class="article-card">
           <div class="card-img card-img-blue"></div>
           <div class="card-body">
-            <span class="cat cat-teal">건강</span>
-            <h3><a href="#">직장인을 위한 3분 데스크 명상</a></h3>
-            <span class="read-time">3분 읽기</span>
+            <span class="cat cat-teal" data-en="Health">건강</span>
+            <h3><a href="#" data-en="A 3-Minute Desk Meditation for Office Workers">직장인을 위한 3분 데스크 명상</a></h3>
+            <span class="read-time" data-en="3 min read">3분 읽기</span>
           </div>
         </article>
 
         <article class="article-card">
           <div class="card-img card-img-amber"></div>
           <div class="card-body">
-            <span class="cat cat-amber">과학</span>
-            <h3><a href="#">코르티솔과 명상: 스트레스 호르몬을 낮추는 방법</a></h3>
-            <span class="read-time">9분 읽기</span>
+            <span class="cat cat-amber" data-en="Science">과학</span>
+            <h3><a href="#" data-en="Cortisol and Meditation: How to Lower Your Stress Hormone">코르티솔과 명상: 스트레스 호르몬을 낮추는 방법</a></h3>
+            <span class="read-time" data-en="9 min read">9분 읽기</span>
           </div>
         </article>
 
         <article class="article-card">
           <div class="card-img card-img-green"></div>
           <div class="card-body">
-            <span class="cat cat-green">명상법</span>
-            <h3><a href="#">자비 명상(Loving-Kindness)으로 관계 회복하기</a></h3>
-            <span class="read-time">7분 읽기</span>
+            <span class="cat cat-green" data-en="Meditation">명상법</span>
+            <h3><a href="#" data-en="Restoring Relationships Through Loving-Kindness Meditation">자비 명상(Loving-Kindness)으로 관계 회복하기</a></h3>
+            <span class="read-time" data-en="7 min read">7분 읽기</span>
           </div>
         </article>
 
         <article class="article-card">
           <div class="card-img card-img-purple"></div>
           <div class="card-body">
-            <span class="cat cat-purple">마음챙김</span>
-            <h3><a href="#">밥을 먹으며 하는 마음챙김: 식사 명상 가이드</a></h3>
-            <span class="read-time">5분 읽기</span>
+            <span class="cat cat-purple" data-en="Mindfulness">마음챙김</span>
+            <h3><a href="#" data-en="Mindful Eating: A Guide to Meditation at Mealtime">밥을 먹으며 하는 마음챙김: 식사 명상 가이드</a></h3>
+            <span class="read-time" data-en="5 min read">5분 읽기</span>
           </div>
         </article>
 
         <article class="article-card">
           <div class="card-img card-img-teal"></div>
           <div class="card-body">
-            <span class="cat cat-teal">건강</span>
-            <h3><a href="#">명상과 면역력: 과학이 밝힌 놀라운 연관성</a></h3>
-            <span class="read-time">8분 읽기</span>
+            <span class="cat cat-teal" data-en="Health">건강</span>
+            <h3><a href="#" data-en="Meditation and Immunity: The Surprising Connection Science Revealed">명상과 면역력: 과학이 밝힌 놀라운 연관성</a></h3>
+            <span class="read-time" data-en="8 min read">8분 읽기</span>
           </div>
         </article>
 
@@ -291,8 +286,8 @@
   <section class="quote-section">
     <div class="container">
       <blockquote>
-        <p>"명상은 뭔가를 하는 것이 아니라, 그냥 있는 것입니다."</p>
-        <cite>— 존 카밧진, MBSR 창시자</cite>
+        <p data-en="&ldquo;Meditation is not about doing something, it&rsquo;s about being.&rdquo;">"명상은 뭔가를 하는 것이 아니라, 그냥 있는 것입니다."</p>
+        <cite data-en="— Jon Kabat-Zinn, Founder of MBSR">— 존 카밧진, MBSR 창시자</cite>
       </blockquote>
     </div>
   </section>
@@ -302,14 +297,14 @@
     <div class="container">
       <div class="newsletter-inner">
         <div class="newsletter-text">
-          <h2>매주 명상 팁을 받아보세요</h2>
-          <p>가이드 명상, 최신 연구, 일상 마음챙김 팁을 매주 무료로 전달합니다.</p>
+          <h2 data-en="Get Weekly Meditation Tips">매주 명상 팁을 받아보세요</h2>
+          <p data-en="Guided meditations, latest research, and daily mindfulness tips — delivered free every week.">가이드 명상, 최신 연구, 일상 마음챙김 팁을 매주 무료로 전달합니다.</p>
         </div>
         <form class="newsletter-form" onsubmit="handleSubscribe(event)">
-          <input type="email" placeholder="이메일 주소 입력" required />
-          <button type="submit">구독하기</button>
+          <input type="email" id="newsletter-input" placeholder="이메일 주소 입력" data-placeholder-en="Enter your email address" required />
+          <button type="submit" id="newsletter-btn" data-en="Subscribe">구독하기</button>
         </form>
-        <p class="newsletter-note">스팸 없음. 언제든 구독 취소 가능.</p>
+        <p class="newsletter-note" data-en="No spam. Unsubscribe anytime.">스팸 없음. 언제든 구독 취소 가능.</p>
       </div>
     </div>
   </section>
@@ -322,13 +317,13 @@
         <div class="footer-brand">
           <a href="index.html" class="logo-link footer-logo">
             <svg viewBox="0 0 260 70" width="130" height="35" aria-label="나온 명상">
-              <text x="2"  y="54" class="logo-green">나</text>
-              <text x="58" y="54" class="logo-green">온</text>
+              <text x="2"   y="54" class="logo-green">나</text>
+              <text x="58"  y="54" class="logo-green">온</text>
               <text x="138" y="54" class="logo-amber">명</text>
               <text x="196" y="54" class="logo-amber">상</text>
             </svg>
           </a>
-          <p>건강한 마음, 건강한 삶.<br>나온 명상은 누구나 명상을 시작할 수 있도록 돕습니다.</p>
+          <p data-en-html="Healthy mind, healthy life.<br>Naon Meditation helps everyone start their meditation journey.">건강한 마음, 건강한 삶.<br>나온 명상은 누구나 명상을 시작할 수 있도록 돕습니다.</p>
           <div class="social-links">
             <a href="#" aria-label="Instagram">📸</a>
             <a href="#" aria-label="YouTube">▶</a>
@@ -337,69 +332,63 @@
         </div>
 
         <div class="footer-col">
-          <h4>명상 가이드</h4>
+          <h4 data-en="Meditation Guides">명상 가이드</h4>
           <ul>
-            <li><a href="#">호흡 명상</a></li>
-            <li><a href="#">바디 스캔</a></li>
-            <li><a href="#">자비 명상</a></li>
-            <li><a href="#">걷기 명상</a></li>
-            <li><a href="#">AI 자세 교정</a></li>
+            <li><a href="#" data-en="Breath Meditation">호흡 명상</a></li>
+            <li><a href="#" data-en="Body Scan">바디 스캔</a></li>
+            <li><a href="#" data-en="Loving-Kindness">자비 명상</a></li>
+            <li><a href="#" data-en="Walking Meditation">걷기 명상</a></li>
+            <li><a href="#" data-en="AI Posture Guide">AI 자세 교정</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>주제별</h4>
+          <h4 data-en="By Topic">주제별</h4>
           <ul>
-            <li><a href="#">스트레스 관리</a></li>
-            <li><a href="#">수면 개선</a></li>
-            <li><a href="#">집중력 향상</a></li>
-            <li><a href="#">감정 조절</a></li>
-            <li><a href="#">관계 개선</a></li>
+            <li><a href="#" data-en="Stress Management">스트레스 관리</a></li>
+            <li><a href="#" data-en="Better Sleep">수면 개선</a></li>
+            <li><a href="#" data-en="Focus & Concentration">집중력 향상</a></li>
+            <li><a href="#" data-en="Emotional Regulation">감정 조절</a></li>
+            <li><a href="#" data-en="Relationships">관계 개선</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4>나온 명상</h4>
+          <h4 data-en="Naon Meditation">나온 명상</h4>
           <ul>
-            <li><a href="#">소개</a></li>
-            <li><a href="#">팀</a></li>
-            <li><a href="#">광고 문의</a></li>
-            <li><a href="#">개인정보처리방침</a></li>
-            <li><a href="#">이용약관</a></li>
+            <li><a href="#" data-en="About">소개</a></li>
+            <li><a href="#" data-en="Team">팀</a></li>
+            <li><a href="#" data-en="Advertise">광고 문의</a></li>
+            <li><a href="#" data-en="Privacy Policy">개인정보처리방침</a></li>
+            <li><a href="#" data-en="Terms of Use">이용약관</a></li>
           </ul>
         </div>
 
       </div>
 
       <div class="footer-bottom">
-        <p>© 2025 나온 명상. All rights reserved.</p>
-        <p>건강한 마음이 건강한 세상을 만듭니다.</p>
+        <p data-en="© 2025 Naon Meditation. All rights reserved.">© 2025 나온 명상. All rights reserved.</p>
+        <p data-en="A healthy mind creates a healthy world.">건강한 마음이 건강한 세상을 만듭니다.</p>
       </div>
     </div>
   </footer>
 
   <!-- ── MEDITATION MODAL ──────────────────────────── -->
-  <div class="meditation-modal" id="meditation-modal" role="dialog" aria-modal="true" aria-label="AI 명상 세션">
+  <div class="meditation-modal" id="meditation-modal" role="dialog" aria-modal="true">
     <div class="modal-backdrop" onclick="closeMeditationModal()"></div>
     <div class="modal-container">
       <div class="modal-header">
         <div class="modal-title">
           <span class="modal-dot"></span>
-          <span>AI 명상 세션 · 나온 명상</span>
+          <span data-en="AI Meditation Session · Naon Meditation">AI 명상 세션 · 나온 명상</span>
         </div>
         <button class="modal-close" onclick="closeMeditationModal()" aria-label="닫기">✕</button>
       </div>
       <div class="modal-body">
-        <iframe
-          id="meditation-iframe"
-          src=""
-          allow="camera; microphone"
-          allowfullscreen
-          title="PoseNet 차크라 명상 가이드"
-        ></iframe>
+        <iframe id="meditation-iframe" src="" allow="camera; microphone" allowfullscreen title="PoseNet Chakra Meditation"></iframe>
         <div class="modal-loading" id="modal-loading">
           <div class="modal-spinner"></div>
-          <p>명상 앱을 불러오는 중…</p>
+          <p data-en="Loading meditation app…">명상 앱을 불러오는 중…</p>
         </div>
       </div>
     </div>

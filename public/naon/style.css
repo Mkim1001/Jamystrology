@@ -458,6 +458,27 @@ ul { list-style: none; }
   opacity: .4;
 }
 
+/* ── Language Toggle Button ───────────────────────── */
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 13px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  transition: border-color .2s, background .2s;
+  flex-shrink: 0;
+}
+.lang-toggle:hover { border-color: var(--green); background: var(--green-light); }
+.lang-ko, .lang-en { transition: color .2s; color: var(--gray-light); }
+.lang-ko.active, .lang-en.active { color: var(--green-dark); }
+.lang-divider { color: var(--border); font-weight: 300; }
+
 /* ── Try Meditation Session Button ───────────────── */
 .btn-try {
   display: inline-flex;
