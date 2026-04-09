@@ -171,6 +171,29 @@ const sketch = (p) => {
       });
     }
 
+    // Breathing guide click — native DOM listener on canvas element
+    cnv.elt.addEventListener('click', (e) => {
+      const rect = cnv.elt.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const cx = 88, cy = p.height - 88;
+      if (Math.hypot(mx - cx, my - cy) < 56) {
+        breathModeIdx  = (breathModeIdx + 1) % BREATH_MODES.length;
+        breathPhaseIdx = 0;
+        breathTimer    = 0;
+        breathPhase    = 0;
+      }
+    });
+
+    // Cursor change via mousemove on canvas
+    cnv.elt.addEventListener('mousemove', (e) => {
+      const rect = cnv.elt.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      const cx = 88, cy = p.height - 88;
+      cnv.elt.style.cursor = Math.hypot(mx - cx, my - cy) < 56 ? 'pointer' : 'default';
+    });
+
     // Start webcam
     video = p.createCapture(p.VIDEO);
     video.size(640, 480);
@@ -587,9 +610,8 @@ const sketch = (p) => {
     const prog  = Math.min(breathTimer / bPh.frames, 1);
     const secsLeft = Math.ceil((bPh.frames - breathTimer) / 60);
 
-    // Hover detection → cursor
+    // Hover detection (cursor is handled via mousemove listener)
     const hovered = p.dist(p.mouseX, p.mouseY, cx, cy) < hitR;
-    document.body.style.cursor = hovered ? 'pointer' : 'default';
 
     // Phase colour
     const col = bPh.label === '들숨' ? [100, 210, 255]
@@ -651,16 +673,6 @@ const sketch = (p) => {
     }
   }
 
-  // ─── Click → cycle breathing mode ───────────────────────────────
-  p.mousePressed = () => {
-    const cx = 88, cy = p.height - 88;
-    if (p.dist(p.mouseX, p.mouseY, cx, cy) < 56) {
-      breathModeIdx  = (breathModeIdx + 1) % BREATH_MODES.length;
-      breathPhaseIdx = 0;
-      breathTimer    = 0;
-      breathPhase    = 0;
-    }
-  };
 };
 
 // ─── Timer update ─────────────────────────────────────────────────────
