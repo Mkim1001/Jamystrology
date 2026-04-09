@@ -116,12 +116,33 @@ const CHAKRAS = [
   { name: '근원', color: [244, 67, 54], glow: [255, 100, 80] },
 ];
 
+// ─── Breathing modes ──────────────────────────────────────────────────
+const BREATH_MODES = [
+  { name: '일반 호흡', desc: '4 · 4', phases: [
+    { label: '들숨', frames: 240, fromVal: 0, toVal: 1 },
+    { label: '날숨', frames: 240, fromVal: 1, toVal: 0 },
+  ]},
+  { name: '4-7-8 호흡', desc: '4 · 7 · 8', phases: [
+    { label: '들숨', frames: 240, fromVal: 0, toVal: 1 },
+    { label: '참기',  frames: 420, fromVal: 1, toVal: 1 },
+    { label: '날숨', frames: 480, fromVal: 1, toVal: 0 },
+  ]},
+  { name: '박스 호흡', desc: '4 · 4 · 4 · 4', phases: [
+    { label: '들숨', frames: 240, fromVal: 0, toVal: 1 },
+    { label: '참기',  frames: 240, fromVal: 1, toVal: 1 },
+    { label: '날숨', frames: 240, fromVal: 1, toVal: 0 },
+    { label: '참기',  frames: 240, fromVal: 0, toVal: 0 },
+  ]},
+];
+
 // ─── Global state ─────────────────────────────────────────────────────
 let video, poseNet, pose = null;
 let modelReady = false;
 let particles = [];
 let breathPhase = 0;
-let breathIn = true;
+let breathModeIdx = 0;
+let breathPhaseIdx = 0;
+let breathTimer = 0;
 let sessionStart = Date.now();
 let meditationScore = 0;
 let bgStars = [];
@@ -177,10 +198,16 @@ const sketch = (p) => {
     // Draw stars
     drawStars(p);
 
-    // Breathing cycle (~8s per full cycle)
-    breathPhase += breathIn ? 0.003 : 0.003;
-    if (breathPhase >= 1) { breathPhase = 1; breathIn = false; }
-    if (breathPhase <= 0 && !breathIn) { breathPhase = 0; breathIn = true; }
+    // Breathing cycle — driven by current mode
+    const bMode = BREATH_MODES[breathModeIdx];
+    const bPh   = bMode.phases[breathPhaseIdx];
+    breathTimer++;
+    const prog = Math.min(breathTimer / bPh.frames, 1);
+    breathPhase = bPh.fromVal + (bPh.toVal - bPh.fromVal) * prog;
+    if (breathTimer >= bPh.frames) {
+      breathTimer = 0;
+      breathPhaseIdx = (breathPhaseIdx + 1) % bMode.phases.length;
+    }
 
     // Update timer
     updateTimer();
@@ -548,41 +575,92 @@ const sketch = (p) => {
     }
   }
 
-  // ─── Breathing guide ring ────────────────────────────────────────
+  // ─── Breathing guide — clickable, mode-aware ─────────────────────
   function drawBreathingGuide(p) {
-    const cx = 70, cy = p.height - 70;
-    const maxR = 35, minR = 20;
-    const r = minR + (maxR - minR) * breathPhase;
-    const label = breathIn ? '들숨' : '날숨';
+    const cx = 88, cy = p.height - 88;
+    const trackR = 42, hitR = 56;
+    const minFill = 14, maxFill = 32;
+    const fillR = minFill + (maxFill - minFill) * breathPhase;
 
-    // Outer ring
-    p.stroke(124, 58, 237, 60);
-    p.strokeWeight(1);
-    p.noFill();
-    p.ellipse(cx, cy, maxR * 2 + 10, maxR * 2 + 10);
+    const bMode = BREATH_MODES[breathModeIdx];
+    const bPh   = bMode.phases[breathPhaseIdx];
+    const prog  = Math.min(breathTimer / bPh.frames, 1);
+    const secsLeft = Math.ceil((bPh.frames - breathTimer) / 60);
 
-    // Breathing ring
-    p.strokeWeight(2.5);
-    p.stroke(167, 139, 250, 180);
-    p.ellipse(cx, cy, r * 2, r * 2);
+    // Hover detection → cursor
+    const hovered = p.dist(p.mouseX, p.mouseY, cx, cy) < hitR;
+    document.body.style.cursor = hovered ? 'pointer' : 'default';
+
+    // Phase colour
+    const col = bPh.label === '들숨' ? [100, 210, 255]
+              : bPh.label === '날숨' ? [167, 139, 250]
+              : [255, 195, 80]; // 참기
+
+    // Background disc
     p.noStroke();
+    p.fill(10, 8, 28, hovered ? 200 : 160);
+    p.ellipse(cx, cy, hitR * 2, hitR * 2);
 
-    // Inner fill
-    p.fill(124, 58, 237, 30 + breathPhase * 50);
-    p.ellipse(cx, cy, r * 2, r * 2);
+    // Track ring (full circle, dim)
+    p.noFill();
+    p.stroke(50, 38, 80, 140);
+    p.strokeWeight(3.5);
+    p.ellipse(cx, cy, trackR * 2, trackR * 2);
 
-    // Label
-    p.fill(196, 181, 253, 200);
+    // Progress arc
+    p.stroke(col[0], col[1], col[2], hovered ? 240 : 190);
+    p.strokeWeight(3.5);
+    p.arc(cx, cy, trackR * 2, trackR * 2,
+          -p.HALF_PI, -p.HALF_PI + p.TWO_PI * prog);
+
+    // Breathing fill bubble
+    p.noStroke();
+    const bubbleAlpha = 18 + breathPhase * 50;
+    p.fill(col[0], col[1], col[2], bubbleAlpha);
+    p.ellipse(cx, cy, fillR * 2, fillR * 2);
+
+    // Hover glow ring
+    if (hovered) {
+      const hp = 0.5 + 0.5 * Math.sin(p.frameCount * 0.12);
+      p.fill(167, 139, 250, 18 + hp * 14);
+      p.ellipse(cx, cy, hitR * 2, hitR * 2);
+    }
+
+    // Phase label (center)
+    p.fill(col[0], col[1], col[2], 230);
     p.textAlign(p.CENTER, p.CENTER);
-    p.textSize(11);
     p.textFont('sans-serif');
-    p.text(label, cx, cy);
+    p.textSize(12);
+    p.text(bPh.label, cx, cy - 5);
 
-    // Session label
-    p.fill(109, 72, 200, 150);
+    // Countdown seconds
+    p.fill(180, 160, 220, 170);
+    p.textSize(10);
+    p.text(secsLeft + 's', cx, cy + 8);
+
+    // Mode name below circle
+    p.fill(130, 100, 200, 200);
     p.textSize(9);
-    p.text('호흡 가이드', cx, cy + maxR + 12);
+    p.text(bMode.name, cx, cy + trackR + 13);
+
+    // "클릭으로 변경" hint on hover
+    if (hovered) {
+      p.fill(167, 139, 250, 190);
+      p.textSize(8);
+      p.text('클릭으로 변경', cx, cy + trackR + 24);
+    }
   }
+
+  // ─── Click → cycle breathing mode ───────────────────────────────
+  p.mousePressed = () => {
+    const cx = 88, cy = p.height - 88;
+    if (p.dist(p.mouseX, p.mouseY, cx, cy) < 56) {
+      breathModeIdx  = (breathModeIdx + 1) % BREATH_MODES.length;
+      breathPhaseIdx = 0;
+      breathTimer    = 0;
+      breathPhase    = 0;
+    }
+  };
 };
 
 // ─── Timer update ─────────────────────────────────────────────────────
