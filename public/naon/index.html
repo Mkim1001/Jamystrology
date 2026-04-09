@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>나온 명상 — 건강한 마음, 건강한 삶</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ───────────────────────────────────────────────── -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <!-- Logo -->
+      <a href="index.html" class="logo-link">
+        <svg viewBox="0 0 260 70" width="160" height="42" aria-label="나온 명상">
+          <!-- 나 -->
+          <text x="2"  y="54" class="logo-green">나</text>
+          <!-- 온 — O is a circle -->
+          <text x="58" y="54" class="logo-green">온</text>
+          <!-- gap -->
+          <!-- 명 -->
+          <text x="138" y="54" class="logo-amber">명</text>
+          <!-- 상 -->
+          <text x="196" y="54" class="logo-amber">상</text>
+        </svg>
+      </a>
+
+      <!-- Nav -->
+      <nav class="main-nav" id="main-nav">
+        <ul>
+          <li><a href="meditation.html">명상법</a></li>
+          <li><a href="health.html">건강</a></li>
+          <li><a href="mindfulness.html">마음챙김</a></li>
+          <li><a href="science.html">과학</a></li>
+          <li><a href="community.html">커뮤니티</a></li>
+        </ul>
+      </nav>
+
+      <!-- CTA -->
+      <div class="header-actions">
+        <a href="app.html" class="btn-start">AI 명상 시작</a>
+        <button class="hamburger" id="hamburger" aria-label="메뉴">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── BREAKING BAR ─────────────────────────────────────────── -->
+  <div class="breaking-bar">
+    <span class="breaking-label">신규</span>
+    <a href="#">AI PoseNet 차크라 명상 가이드가 출시되었습니다 →</a>
+  </div>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-image hero-img-1"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-tag">오늘의 명상</span>
+      <h1>지금 이 순간,<br>나를 찾는 시간</h1>
+      <p>바쁜 일상 속 단 10분. 호흡에 집중하는 것만으로도 마음이 달라집니다.</p>
+      <div class="hero-btns">
+        <a href="app.html" class="btn-primary">AI 명상 시작하기</a>
+        <a href="guide.html" class="btn-ghost">입문 가이드</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LATEST STRIP ─────────────────────────────────────────── -->
+  <section class="latest-strip">
+    <div class="container">
+      <div class="latest-header">
+        <h2>최신 아티클</h2>
+        <a href="articles.html" class="see-all">전체 보기 →</a>
+      </div>
+      <div class="latest-grid">
+
+        <article class="latest-card">
+          <div class="card-img card-img-green"></div>
+          <div class="card-body">
+            <span class="cat cat-green">명상법</span>
+            <h3><a href="#">아침 5분 호흡 명상으로 하루를 여는 법</a></h3>
+            <p>눈을 뜨자마자 휴대폰 대신 호흡에 집중해 보세요. 단 5분이 하루의 질을 바꿉니다.</p>
+            <span class="read-time">5분 읽기</span>
+          </div>
+        </article>
+
+        <article class="latest-card">
+          <div class="card-img card-img-amber"></div>
+          <div class="card-body">
+            <span class="cat cat-amber">건강</span>
+            <h3><a href="#">스트레스를 줄이는 마음챙김 기법 5가지</a></h3>
+            <p>일상에서 바로 실천할 수 있는 마음챙김 기술들. 과학이 증명한 방법들입니다.</p>
+            <span class="read-time">7분 읽기</span>
+          </div>
+        </article>
+
+        <article class="latest-card">
+          <div class="card-img card-img-teal"></div>
+          <div class="card-body">
+            <span class="cat cat-teal">과학</span>
+            <h3><a href="#">명상이 뇌 구조를 바꾼다: 최신 연구 결과</a></h3>
+            <p>8주 명상 후 회백질 밀도가 증가한다는 하버드 연구를 소개합니다.</p>
+            <span class="read-time">8분 읽기</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURED ARTICLE ─────────────────────────────────────── -->
+  <section class="featured-section">
+    <div class="container">
+      <div class="featured-article">
+        <div class="featured-img featured-img-purple"></div>
+        <div class="featured-text">
+          <span class="cat cat-purple">편집장 추천</span>
+          <h2>수면 전 바디 스캔 명상: 깊은 잠을 위한 20분 가이드</h2>
+          <p class="featured-desc">
+            잠들기 전, 발끝부터 머리끝까지 몸을 천천히 훑어 내려가는 바디 스캔 명상은 불면증 해소에 탁월한 효과가 있습니다. 매사추세츠 대학교 마음챙김 센터에서 개발한 이 기법은 전 세계 수백만 명이 실천하고 있습니다.
+          </p>
+          <ul class="featured-bullets">
+            <li>✦ 긴장된 근육 이완에 효과적</li>
+            <li>✦ 잠드는 시간 평균 40% 단축</li>
+            <li>✦ 매일 20분, 2주면 변화를 느낍니다</li>
+          </ul>
+          <a href="#" class="btn-link">전체 가이드 읽기 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GETTING STARTED ──────────────────────────────────────── -->
+  <section class="getting-started">
+    <div class="container">
+      <div class="section-head">
+        <h2>명상이 처음이신가요?</h2>
+        <p>누구나 시작할 수 있습니다. 단 한 번의 호흡부터 시작하세요.</p>
+      </div>
+      <div class="start-grid">
+
+        <div class="start-card">
+          <div class="start-icon">🌱</div>
+          <h3>호흡 명상</h3>
+          <p>가장 기본적인 명상. 코로 들이쉬고 입으로 내쉬며 호흡에만 집중합니다.</p>
+          <a href="#" class="btn-link">시작하기 →</a>
+        </div>
+
+        <div class="start-card">
+          <div class="start-icon">🧘</div>
+          <h3>바디 스캔</h3>
+          <p>온몸을 의식하며 긴장을 풀어나가는 명상. 수면 전 특히 효과적입니다.</p>
+          <a href="#" class="btn-link">시작하기 →</a>
+        </div>
+
+        <div class="start-card">
+          <div class="start-icon">🤖</div>
+          <h3>AI 자세 교정</h3>
+          <p>카메라로 자세를 분석하고 차크라 포인트를 실시간으로 시각화합니다.</p>
+          <a href="app.html" class="btn-link">앱 열기 →</a>
+        </div>
+
+        <div class="start-card">
+          <div class="start-icon">🎵</div>
+          <h3>사운드 명상</html>
+          <p>자연 소리나 바이노럴 비트를 활용해 더 깊은 집중 상태로 들어갑니다.</p>
+          <a href="#" class="btn-link">시작하기 →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AI APP PROMO ──────────────────────────────────────────── -->
+  <section class="app-promo">
+    <div class="container">
+      <div class="promo-inner">
+        <div class="promo-text">
+          <span class="promo-badge">NEW</span>
+          <h2>AI가 당신의 자세를 실시간으로 분석합니다</h2>
+          <p>
+            카메라 앞에 앉기만 하면 PoseNet AI가 척추 정렬과 어깨 균형을 감지합니다.
+            7개 차크라 포인트가 자세에 따라 빛나며 올바른 명상 자세를 안내합니다.
+          </p>
+          <ul class="promo-list">
+            <li>✓ 실시간 척추·어깨 정렬 감지</li>
+            <li>✓ 7개 차크라 시각화</li>
+            <li>✓ 3가지 호흡 가이드 (일반 / 4-7-8 / 박스)</li>
+            <li>✓ 완전 무료 · 설치 불필요</li>
+          </ul>
+          <a href="app.html" class="btn-primary">무료로 체험하기</a>
+        </div>
+        <div class="promo-visual">
+          <div class="promo-phone">
+            <div class="phone-screen">
+              <div class="chakra-preview">
+                <div class="cp cp1"></div>
+                <div class="cp cp2"></div>
+                <div class="cp cp3"></div>
+                <div class="cp cp4"></div>
+                <div class="cp cp5"></div>
+                <div class="cp cp6"></div>
+                <div class="cp cp7"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MORE ARTICLES ─────────────────────────────────────────── -->
+  <section class="more-articles">
+    <div class="container">
+      <div class="section-head">
+        <h2>인기 아티클</h2>
+        <a href="articles.html" class="see-all">전체 보기 →</a>
+      </div>
+      <div class="articles-grid">
+
+        <article class="article-card">
+          <div class="card-img card-img-rose"></div>
+          <div class="card-body">
+            <span class="cat cat-rose">마음챙김</span>
+            <h3><a href="#">감정에 휩쓸리지 않는 법: 관찰자 시점 명상</a></h3>
+            <span class="read-time">6분 읽기</span>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="card-img card-img-blue"></div>
+          <div class="card-body">
+            <span class="cat cat-teal">건강</span>
+            <h3><a href="#">직장인을 위한 3분 데스크 명상</a></h3>
+            <span class="read-time">3분 읽기</span>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="card-img card-img-amber"></div>
+          <div class="card-body">
+            <span class="cat cat-amber">과학</span>
+            <h3><a href="#">코르티솔과 명상: 스트레스 호르몬을 낮추는 방법</a></h3>
+            <span class="read-time">9분 읽기</span>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="card-img card-img-green"></div>
+          <div class="card-body">
+            <span class="cat cat-green">명상법</span>
+            <h3><a href="#">자비 명상(Loving-Kindness)으로 관계 회복하기</a></h3>
+            <span class="read-time">7분 읽기</span>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="card-img card-img-purple"></div>
+          <div class="card-body">
+            <span class="cat cat-purple">마음챙김</span>
+            <h3><a href="#">밥을 먹으며 하는 마음챙김: 식사 명상 가이드</a></h3>
+            <span class="read-time">5분 읽기</span>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="card-img card-img-teal"></div>
+          <div class="card-body">
+            <span class="cat cat-teal">건강</span>
+            <h3><a href="#">명상과 면역력: 과학이 밝힌 놀라운 연관성</a></h3>
+            <span class="read-time">8분 읽기</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── QUOTE ─────────────────────────────────────────────────── -->
+  <section class="quote-section">
+    <div class="container">
+      <blockquote>
+        <p>"명상은 뭔가를 하는 것이 아니라, 그냥 있는 것입니다."</p>
+        <cite>— 존 카밧진, MBSR 창시자</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ── NEWSLETTER ────────────────────────────────────────────── -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-inner">
+        <div class="newsletter-text">
+          <h2>매주 명상 팁을 받아보세요</h2>
+          <p>가이드 명상, 최신 연구, 일상 마음챙김 팁을 매주 무료로 전달합니다.</p>
+        </div>
+        <form class="newsletter-form" onsubmit="handleSubscribe(event)">
+          <input type="email" placeholder="이메일 주소 입력" required />
+          <button type="submit">구독하기</button>
+        </form>
+        <p class="newsletter-note">스팸 없음. 언제든 구독 취소 가능.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <a href="index.html" class="logo-link footer-logo">
+            <svg viewBox="0 0 260 70" width="130" height="35" aria-label="나온 명상">
+              <text x="2"  y="54" class="logo-green">나</text>
+              <text x="58" y="54" class="logo-green">온</text>
+              <text x="138" y="54" class="logo-amber">명</text>
+              <text x="196" y="54" class="logo-amber">상</text>
+            </svg>
+          </a>
+          <p>건강한 마음, 건강한 삶.<br>나온 명상은 누구나 명상을 시작할 수 있도록 돕습니다.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram">📸</a>
+            <a href="#" aria-label="YouTube">▶</a>
+            <a href="#" aria-label="Kakao">💬</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>명상 가이드</h4>
+          <ul>
+            <li><a href="#">호흡 명상</a></li>
+            <li><a href="#">바디 스캔</a></li>
+            <li><a href="#">자비 명상</a></li>
+            <li><a href="#">걷기 명상</a></li>
+            <li><a href="#">AI 자세 교정</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>주제별</h4>
+          <ul>
+            <li><a href="#">스트레스 관리</a></li>
+            <li><a href="#">수면 개선</a></li>
+            <li><a href="#">집중력 향상</a></li>
+            <li><a href="#">감정 조절</a></li>
+            <li><a href="#">관계 개선</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>나온 명상</h4>
+          <ul>
+            <li><a href="#">소개</a></li>
+            <li><a href="#">팀</a></li>
+            <li><a href="#">광고 문의</a></li>
+            <li><a href="#">개인정보처리방침</a></li>
+            <li><a href="#">이용약관</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 나온 명상. All rights reserved.</p>
+        <p>건강한 마음이 건강한 세상을 만듭니다.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
