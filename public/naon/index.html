@@ -385,10 +385,15 @@
         <button class="modal-close" onclick="closeMeditationModal()" aria-label="닫기">✕</button>
       </div>
       <div class="modal-body">
-        <iframe id="meditation-iframe" src="" allow="camera; microphone" allowfullscreen title="PoseNet Chakra Meditation"></iframe>
+        <!-- src is intentionally unset; JS sets it on first open -->
+        <iframe id="meditation-iframe" allow="camera; microphone" allowfullscreen title="PoseNet Chakra Meditation"></iframe>
         <div class="modal-loading" id="modal-loading">
-          <div class="modal-spinner"></div>
-          <p data-en="Loading meditation app…">명상 앱을 불러오는 중…</p>
+          <div class="modal-spinner" id="modal-spinner"></div>
+          <p id="modal-loading-text" data-en="Loading meditation app…">명상 앱을 불러오는 중…</p>
+          <a id="modal-newtab" href="meditation/sketch.html" target="_blank"
+             style="display:none; margin-top:16px; color:#4caf50; font-size:14px; font-weight:700; text-decoration:underline;">
+            새 탭에서 열기 / Open in new tab
+          </a>
         </div>
       </div>
     </div>

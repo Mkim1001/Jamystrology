@@ -41,33 +41,85 @@ function applyLang(lang) {
 }
 
 // ── Meditation Modal ─────────────────────────────────
-// Path: relative to index.html location
-// posenet-meditation repo root → meditation/sketch.html
-const SKETCH_SRC = 'meditation/sketch.html';
-let _iframeReady = false;
+// Candidate paths tried in order (relative to this page's location)
+const SKETCH_CANDIDATES = [
+  'meditation/sketch.html',
+  '../meditation/sketch.html',
+  '../public/meditation/sketch.html',
+];
+let _iframeLoading = false;
+let _iframeLoaded  = false;
+let _loadTimer     = null;
+
+async function _resolveSketchSrc() {
+  for (const path of SKETCH_CANDIDATES) {
+    try {
+      const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+      if (res.ok) return path;
+    } catch (_) { /* try next */ }
+  }
+  return null; // all failed → show new-tab link
+}
+
+function _showNewtab() {
+  const newtab  = document.getElementById('modal-newtab');
+  const spinner = document.getElementById('modal-spinner');
+  const loadTxt = document.getElementById('modal-loading-text');
+  if (newtab)  newtab.style.display  = 'inline-block';
+  if (spinner) spinner.style.display = 'none';
+  if (loadTxt) loadTxt.textContent   =
+    currentLang === 'en'
+      ? 'Camera apps cannot load inside this frame. Please open in a new tab:'
+      : '카메라 앱은 이 창 안에서 로드될 수 없습니다. 새 탭에서 열어주세요:';
+}
 
 function openMeditationModal() {
   const modal   = document.getElementById('meditation-modal');
   const iframe  = document.getElementById('meditation-iframe');
   const loading = document.getElementById('modal-loading');
+  const newtab  = document.getElementById('modal-newtab');
 
-  // Lazy-load iframe only once
-  if (!_iframeReady) {
-    _iframeReady = true;
-    loading.classList.remove('hidden');
-    iframe.classList.remove('loaded');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Already loaded successfully — nothing more to do
+  if (_iframeLoaded) return;
+
+  // Already in progress — just show the modal
+  if (_iframeLoading) return;
+
+  _iframeLoading = true;
+  loading.classList.remove('hidden');
+  iframe.classList.remove('loaded');
+  if (newtab) newtab.style.display = 'none';
+
+  // Resolve path, then set iframe src
+  _resolveSketchSrc().then(src => {
+    if (!src) {
+      // No path reachable (e.g. file:// or network block) → show new-tab
+      _showNewtab();
+      return;
+    }
+
+    // Update new-tab href to the resolved path
+    if (newtab) newtab.href = src;
+
+    // Timeout: if iframe hasn't fired load within 10 s, show fallback
+    _loadTimer = setTimeout(() => {
+      if (!_iframeLoaded) _showNewtab();
+    }, 10000);
 
     iframe.addEventListener('load', function onLoad() {
+      clearTimeout(_loadTimer);
+      _iframeLoaded  = true;
+      _iframeLoading = false;
       loading.classList.add('hidden');
       iframe.classList.add('loaded');
       iframe.removeEventListener('load', onLoad);
     });
 
-    iframe.src = SKETCH_SRC;
-  }
-
-  modal.classList.add('open');
-  document.body.style.overflow = 'hidden';
+    iframe.src = src;
+  });
 }
 
 function closeMeditationModal() {
