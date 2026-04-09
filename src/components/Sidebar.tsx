@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const SYSTEM_TREE = [
   {
@@ -223,6 +224,16 @@ export default function Sidebar({
             <div className="mt-0.5">{tab.label}</div>
           </button>
         ))}
+      </div>
+
+      {/* Multi AI 링크 */}
+      <div className="px-3 pb-3">
+        <Link href="/multi-ai"
+          className="flex items-center justify-center gap-1.5 w-full py-1.5 rounded text-xs transition-all duration-200"
+          style={{ color: "#a6e3a1", border: "1px solid rgba(166,227,161,0.25)", background: "rgba(166,227,161,0.04)" }}>
+          <span>◆✦⊕</span>
+          <span>Multi AI 비교</span>
+        </Link>
       </div>
 
       {/* pulse animation */}
