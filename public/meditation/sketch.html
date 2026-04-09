@@ -249,13 +249,10 @@ const sketch = (p) => {
 
   // ─── Map PoseNet keypoints to chakra positions ───────────────────
   function mapPt(kp, p) {
-    // PoseNet coords in video space (640x480), map to canvas
-    const scaleX = p.width / 640;
-    const scaleY = p.height / 480;
-    // Mirror horizontally
+    // PoseNet already flipped (flipHorizontal: true) → just scale to canvas
     return {
-      x: p.width - kp.x * scaleX,
-      y: kp.y * scaleY,
+      x: kp.x * (p.width / 640),
+      y: kp.y * (p.height / 480),
       confidence: kp.confidence,
     };
   }
