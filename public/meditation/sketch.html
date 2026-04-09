@@ -86,7 +86,7 @@
   <a id="back-btn" href="/">← 홈으로</a>
   <div id="timer-display">
     <div id="session-timer">00:00</div>
-    <div id="pose-status" style="font-size:0.75rem; color:#7c3aed; margin-top:2px;"></div>
+    <div id="pose-status" style="font-size:1.07rem; color:#7c3aed; margin-top:2px;"></div>
   </div>
   <div id="chakra-legend">
     <div class="chakra-item"><div class="chakra-dot" style="background:#9b59b6"></div>왕관 차크라</div>
@@ -652,23 +652,23 @@ const sketch = (p) => {
     p.fill(col[0], col[1], col[2], 230);
     p.textAlign(p.CENTER, p.CENTER);
     p.textFont('sans-serif');
-    p.textSize(12);
+    p.textSize(17);
     p.text(bPh.label, cx, cy - 5);
 
     // Countdown seconds
     p.fill(180, 160, 220, 170);
-    p.textSize(10);
+    p.textSize(15);
     p.text(secsLeft + 's', cx, cy + 8);
 
     // Mode name below circle
     p.fill(130, 100, 200, 200);
-    p.textSize(9);
+    p.textSize(14);
     p.text(bMode.name, cx, cy + trackR + 13);
 
     // "클릭으로 변경" hint on hover
     if (hovered) {
       p.fill(167, 139, 250, 190);
-      p.textSize(8);
+      p.textSize(13);
       p.text('클릭으로 변경', cx, cy + trackR + 24);
     }
   }
