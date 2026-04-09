@@ -41,17 +41,19 @@ function applyLang(lang) {
 }
 
 // ── Meditation Modal ─────────────────────────────────
-// Candidate paths tried in order (relative to this page's location)
+// Candidate paths tried in order (relative to naon/index.html)
 const SKETCH_CANDIDATES = [
-  'meditation/sketch.html',
-  '../meditation/sketch.html',
-  '../public/meditation/sketch.html',
+  '../meditation/sketch.html',   // standard: public/meditation/sketch.html
+  'meditation/sketch.html',      // if served from public/ root
+  '../../public/meditation/sketch.html', // Next.js dev root
 ];
 let _iframeLoading = false;
 let _iframeLoaded  = false;
 let _loadTimer     = null;
 
 async function _resolveSketchSrc() {
+  // file:// blocks fetch — skip detection, return best guess directly
+  if (location.protocol === 'file:') return SKETCH_CANDIDATES[0];
   for (const path of SKETCH_CANDIDATES) {
     try {
       const res = await fetch(path, { method: 'HEAD', cache: 'no-store' });
@@ -93,10 +95,17 @@ function openMeditationModal() {
   iframe.classList.remove('loaded');
   if (newtab) newtab.style.display = 'none';
 
+  // file:// blocks camera inside iframes — skip iframe, show new-tab immediately
+  if (location.protocol === 'file:') {
+    if (newtab) newtab.href = SKETCH_CANDIDATES[0];
+    _showNewtab();
+    return;
+  }
+
   // Resolve path, then set iframe src
   _resolveSketchSrc().then(src => {
     if (!src) {
-      // No path reachable (e.g. file:// or network block) → show new-tab
+      // No path reachable → show new-tab
       _showNewtab();
       return;
     }
