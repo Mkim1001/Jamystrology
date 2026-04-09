@@ -1,20 +1,27 @@
 // ── Meditation Modal ─────────────────────────────────
-const SKETCH_SRC = '../meditation/sketch.html';
+// Path: relative to index.html location
+// posenet-meditation repo root → meditation/sketch.html
+const SKETCH_SRC = 'meditation/sketch.html';
+let _iframeReady = false;
 
 function openMeditationModal() {
   const modal   = document.getElementById('meditation-modal');
   const iframe  = document.getElementById('meditation-iframe');
   const loading = document.getElementById('modal-loading');
 
-  // Load iframe src only on first open (lazy)
-  if (!iframe.src || iframe.src === window.location.href) {
+  // Lazy-load iframe only once
+  if (!_iframeReady) {
+    _iframeReady = true;
     loading.classList.remove('hidden');
     iframe.classList.remove('loaded');
-    iframe.src = SKETCH_SRC;
-    iframe.onload = () => {
+
+    iframe.addEventListener('load', function onLoad() {
       loading.classList.add('hidden');
       iframe.classList.add('loaded');
-    };
+      iframe.removeEventListener('load', onLoad);
+    });
+
+    iframe.src = SKETCH_SRC;
   }
 
   modal.classList.add('open');
