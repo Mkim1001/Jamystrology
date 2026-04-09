@@ -1,3 +1,37 @@
+// ── Meditation Modal ─────────────────────────────────
+const SKETCH_SRC = '../meditation/sketch.html';
+
+function openMeditationModal() {
+  const modal   = document.getElementById('meditation-modal');
+  const iframe  = document.getElementById('meditation-iframe');
+  const loading = document.getElementById('modal-loading');
+
+  // Load iframe src only on first open (lazy)
+  if (!iframe.src || iframe.src === window.location.href) {
+    loading.classList.remove('hidden');
+    iframe.classList.remove('loaded');
+    iframe.src = SKETCH_SRC;
+    iframe.onload = () => {
+      loading.classList.add('hidden');
+      iframe.classList.add('loaded');
+    };
+  }
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMeditationModal() {
+  const modal = document.getElementById('meditation-modal');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMeditationModal();
+});
+
 // ── Sticky header shadow on scroll ──────────────────
 const header = document.getElementById('site-header');
 window.addEventListener('scroll', () => {
